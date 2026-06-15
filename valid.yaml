@@ -1,6 +1,6 @@
-name: GitHub linked workflow test234 iteration 2 GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2
+name: GitHub li
 steps:
-  - name: trigger
+  - name: trigger GitHub linked workflow test234 iteration 2 GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2 GitHub linked workflow test234 iteration 2 GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2GitHub linked workflow test234 iteration 2
     type: TRIGGER
     next:
       - step: parse
