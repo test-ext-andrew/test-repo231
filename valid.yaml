@@ -1,6 +1,6 @@
-name: GitHub linked workflow test234 iteration 2
+name: GitHub li trigger 
 steps:
-  - name: trigger
+  - name: trigger Git 
     type: TRIGGER
     next:
       - step: parse
