@@ -8,7 +8,7 @@ steps:
   - name: parse
     type: PARSE
     next:
-      - step: review2
+      - step: review
   - name: review
     type: HUMAN_REVIEW
     next:
