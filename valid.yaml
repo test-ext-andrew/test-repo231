@@ -8,15 +8,6 @@ steps:
   - name: parse
     type: PARSE
     next:
-      - step: extract
-
-  - name: extract
-    type: EXTRACT
-    config:
-      extractor:
-        id: ex_lTPabqiQmDXXFQFPgFpcZ
-        version: draft
-    next:
       - step: response
 
   - name: response
