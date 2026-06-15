@@ -17,19 +17,7 @@ steps:
         id: ex_lTPabqiQmDXXFQFPgFpcZ
         version: draft
     next:
-      - step: validation
-
-  - name: validation
-    type: RULE_VALIDATION
-    config:
-      rules:
-        - name: has_required_output
-          formula: output.extract != null
-    next:
-      - result: pass
-        step: response
-      - result: fail
-        step: review
+      - step: review
 
   - name: review
     type: HUMAN_REVIEW
