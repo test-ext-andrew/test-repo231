@@ -1,0 +1,12 @@
+name: GitHub linked workflow test
+steps:
+  - name: trigger
+    type: TRIGGER
+    next:
+      - step: parse
+  - name: parse
+    type: PARSE
+    next:
+      - step: response
+  - name: response
+    type: WEBHOOK_RESPONSE
