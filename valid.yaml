@@ -1,4 +1,4 @@
-name: GitHub linked workflow test
+name: GitHub linked workflow test234 iteration 2
 steps:
   - name: trigger
     type: TRIGGER
@@ -16,6 +16,23 @@ steps:
       extractor:
         id: ex_lTPabqiQmDXXFQFPgFpcZ
         version: draft
+    next:
+      - step: validation
+
+  - name: validation
+    type: RULE_VALIDATION
+    config:
+      rules:
+        - name: has_required_output
+          formula: output.extract != null
+    next:
+      - result: pass
+        step: response
+      - result: fail
+        step: review
+
+  - name: review
+    type: HUMAN_REVIEW
     next:
       - step: response
 
