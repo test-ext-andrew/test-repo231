@@ -7,11 +7,11 @@ steps:
 
   - name: parse
     type: PARSE
-    next: 
+    next:
       - step: review
   - name: review
     type: HUMAN_REVIEW
     next:
-
+      - step: response
   - name: response
     type: WEBHOOK_RESPONSE
