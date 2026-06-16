@@ -17,7 +17,7 @@
       "config": {
         "extractor": {
           "id": "ex_JzQOcFhZTqZWnolMC1Lf3",
-          "version": "0.0"
+          "version": "draft"
         }
       },
       "next": [{ "step": "review" }]
