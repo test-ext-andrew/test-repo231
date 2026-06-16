@@ -1,4 +1,4 @@
-name: GitHub li triggasdfer asdfasdfasdf
+name: GitHub li triggasdfasdfer asdfasdfasdf
 steps:
   - name: trigger Git 
     type: TRIGGER
