@@ -1,13 +1,76 @@
 name: GitHub li triggasdfasdfasdfer asdfasdfasdf
 steps:
-  - name: trigger Git 
-    type: TRIGGER
-    next:
-      - step: parse
-
   - name: parse
     type: PARSE
     next:
       - step: response
+      - step: humanReview1
+      - step: classification1
+      - step: extraction1
+  - name: humanReview1
+    type: HUMAN_REVIEW
+  - name: trigger Git
+    type: TRIGGER
+    next:
+      - step: parse
   - name: response
     type: WEBHOOK_RESPONSE
+  - name: humanReview2
+    type: HUMAN_REVIEW
+  - name: webhookResponse1
+    type: WEBHOOK_RESPONSE
+  - name: extraction1
+    type: EXTRACT
+    config:
+      extractor:
+        id: ex_hITyOPuEQzF57IG9I9bci
+        version: draft
+    next:
+      - step: conditional1
+  - name: validation1
+    type: RULE_VALIDATION
+    next:
+      - step: webhookResponse1
+        result: pass
+      - step: humanReview2
+        result: fail
+  - name: conditional1
+    type: CONDITIONAL
+    config:
+      conditions:
+        - id: condition_Y-To2v9jqNMeOZQeT7k1-
+          type: IF
+          operation: EQUALS
+          leftOperand: "{{extraction1.output}}"
+          rightOperand: "1"
+        - id: condition_3bN2Ph-w-o10nH_CbolbT
+          type: ELSE_IF
+          operation: EQUALS
+          leftOperand: git config --global fetch.prune true
+          rightOperand: "3"
+        - id: condition_PsgU3BtPuzoyNV9eXPXeZ
+          type: ELSE
+    next:
+      - step: validation1
+        conditionId: condition_Y-To2v9jqNMeOZQeT7k1-
+      - step: webhookResponse1
+        conditionId: condition_3bN2Ph-w-o10nH_CbolbT
+      - step: humanReview2
+        conditionId: condition_PsgU3BtPuzoyNV9eXPXeZ
+  - name: classification1
+    type: CLASSIFY
+    config:
+      classifier:
+        id: dp__I78Ow-jFk7uPTXg0zdGR
+        version: draft
+    next:
+      - step: validation1
+        classificationId: classification_hd-
+      - step: webhookResponse1
+        classificationId: classification_Z9I
+      - step: webhookResponse1
+        classificationId: classification_7D-
+      - step: webhookResponse1
+        classificationId: classification_BYL
+      - step: webhookResponse1
+        classificationId: classification_hhT
