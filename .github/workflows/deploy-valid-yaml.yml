@@ -1,0 +1,69 @@
+name: Deploy valid.yaml to Extend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - valid.yaml
+
+concurrency:
+  group: deploy-valid-yaml-to-extend
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      EXTEND_API_KEY: ${{ secrets.EXTEND_API_KEY }}
+      EXTEND_BASE_URL: ${{ vars.EXTEND_BASE_URL }}
+      EXTEND_WORKSPACE_ID: ${{ secrets.EXTEND_WORKSPACE_ID }}
+      EXTEND_REGION: ${{ vars.EXTEND_REGION || 'us' }}
+      EXTEND_WORKFLOW_ID: ${{ secrets.EXTEND_VALID_YAML_WORKFLOW_ID }}
+      EXTEND_CLI_VERSION: 0.4.3
+      CONFIG_PATH: valid.yaml
+      JSON_CONFIG_PATH: /tmp/extend-valid-yaml.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required configuration
+        run: |
+          : "${EXTEND_API_KEY:?Set the EXTEND_API_KEY repository secret}"
+          : "${EXTEND_BASE_URL:?Set the EXTEND_BASE_URL repository variable}"
+          : "${EXTEND_WORKFLOW_ID:?Set the EXTEND_VALID_YAML_WORKFLOW_ID repository secret}"
+          echo "Extend API target: $EXTEND_BASE_URL"
+
+      - name: Convert workflow YAML to JSON
+        run: |
+          python3 -m pip install --disable-pip-version-check --quiet pyyaml
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          import yaml
+
+          source = Path("valid.yaml")
+          target = Path("/tmp/extend-valid-yaml.json")
+          data = yaml.safe_load(source.read_text())
+          target.write_text(json.dumps(data, indent=2) + "\n")
+          PY
+          python3 -m json.tool "$JSON_CONFIG_PATH" > /dev/null
+
+      - name: Update Extend workflow draft
+        run: |
+          npx -y @extend-ai/cli@$EXTEND_CLI_VERSION \
+            workflows update "$EXTEND_WORKFLOW_ID" \
+            --from-file "$JSON_CONFIG_PATH"
+
+      - name: Publish Extend workflow version
+        run: |
+          version_name="valid-yaml-main-${GITHUB_SHA::7}-$(date -u +%Y%m%d%H%M%S)"
+          npx -y @extend-ai/cli@$EXTEND_CLI_VERSION \
+            workflows versions create "$EXTEND_WORKFLOW_ID" \
+            --name "$version_name"

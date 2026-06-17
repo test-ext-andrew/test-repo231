@@ -1,0 +1,55 @@
+name: Deploy valid.json to Extend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - valid.json
+
+concurrency:
+  group: deploy-valid-json-to-extend
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      EXTEND_API_KEY: ${{ secrets.EXTEND_API_KEY }}
+      EXTEND_BASE_URL: ${{ vars.EXTEND_BASE_URL }}
+      EXTEND_WORKSPACE_ID: ${{ secrets.EXTEND_WORKSPACE_ID }}
+      EXTEND_REGION: ${{ vars.EXTEND_REGION || 'us' }}
+      EXTEND_WORKFLOW_ID: ${{ secrets.EXTEND_VALID_JSON_WORKFLOW_ID }}
+      EXTEND_CLI_VERSION: 0.4.3
+      CONFIG_PATH: valid.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required configuration
+        run: |
+          : "${EXTEND_API_KEY:?Set the EXTEND_API_KEY repository secret}"
+          : "${EXTEND_BASE_URL:?Set the EXTEND_BASE_URL repository variable}"
+          : "${EXTEND_WORKFLOW_ID:?Set the EXTEND_VALID_JSON_WORKFLOW_ID repository secret}"
+          echo "Extend API target: $EXTEND_BASE_URL"
+
+      - name: Validate workflow JSON
+        run: jq empty "$CONFIG_PATH"
+
+      - name: Update Extend workflow draft
+        run: |
+          npx -y @extend-ai/cli@$EXTEND_CLI_VERSION \
+            workflows update "$EXTEND_WORKFLOW_ID" \
+            --from-file "$CONFIG_PATH"
+
+      - name: Publish Extend workflow version
+        run: |
+          version_name="valid-json-main-${GITHUB_SHA::7}-$(date -u +%Y%m%d%H%M%S)"
+          npx -y @extend-ai/cli@$EXTEND_CLI_VERSION \
+            workflows versions create "$EXTEND_WORKFLOW_ID" \
+            --name "$version_name"

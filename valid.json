@@ -1,5 +1,5 @@
 {
-  "name": "GitHub linked workflowasdf test",
+  "name": "GitHub linkedasdf worasdfkasdfflow tesasdft",
   "steps": [
     {
       "name": "trigger",
@@ -17,7 +17,7 @@
       "config": {
         "extractor": {
           "id": "ex_UdUIePYGKtRx9oMtD0fBU",
-          "version": "0.0"
+          "version": "draft"
         }
       },
       "next": [{ "step": "review" }]
