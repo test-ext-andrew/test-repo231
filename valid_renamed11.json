@@ -1,5 +1,5 @@
 {
-  "name": "GitHub linkedasdf worasdfkasdfflow tesasdft",
+  "name": "GitHub linkedasdf woraasdfaasdfasdfsdfsdfkasdfflow tesasdft",
   "steps": [
     {
       "name": "trigger",
@@ -9,17 +9,6 @@
     {
       "name": "parse",
       "type": "PARSE",
-      "next": [{ "step": "extract" }]
-    },
-    {
-      "name": "extract",
-      "type": "EXTRACT",
-      "config": {
-        "extractor": {
-          "id": "ex_UdUIePYGKtRx9oMtD0fBU",
-          "version": "draft"
-        }
-      },
       "next": [{ "step": "review" }]
     },
     {
