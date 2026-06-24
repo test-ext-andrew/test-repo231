@@ -9,7 +9,7 @@
     {
       "name": "parse",
       "type": "PARSE",
-      "next": [{ "step": "extrdact" }]
+      "next": [{ "step": "extrcact" }]
     },
     {
       "name": "extract",
