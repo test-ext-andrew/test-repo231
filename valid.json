@@ -12,6 +12,13 @@
       "next": [{ "step": "response" }]
     },
     {
+      "name": "extract",
+      "type": "EXTRACT",
+      "config": { 
+      },
+      "next": [{ "step": "response" }]
+    },
+    {
       "name": "response",
       "type": "WEBHOOK_RESPONSE"
     }
