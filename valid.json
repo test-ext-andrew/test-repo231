@@ -13,7 +13,7 @@
     },
     {
       "name": "response",
-      "type": "WEBHOOK_RESPONSE"
+      "type": "HUMAN_REVIEW"
     }
   ]
 }
