@@ -4,6 +4,11 @@
     {
       "name": "start",
       "type": "TRIGGER",
+      "next": [{ "step": "parse_document" }]
+    },
+    {
+      "name": "parse_document",
+      "type": "PARSE",
       "next": [{ "step": "extract_invoice" }]
     },
     {
@@ -63,38 +68,16 @@
                 "code": "return context.outputs.extract_invoice.total_amount.value.amount >= 10000;"
               }
             }
-          },
-          {
-            "id": "acme_vendor",
-            "name": "ACME vendor",
-            "block": {
-              "id": "block_acme_vendor",
-              "name": "Vendor mentions ACME",
-              "blockType": "semantic",
-              "semantic": {
-                "promptText": "The vendor name {{ outputs.extract_invoice.vendor_name.value }} refers to ACME or an ACME-related entity."
-              }
-            }
           }
         ]
       },
       "next": [
         { "step": "review_response", "branchId": "high_value" },
-        { "step": "review_response", "branchId": "acme_vendor" },
         { "step": "passed_response", "branchId": "otherwise" }
       ]
     },
-    {
-      "name": "passed_response",
-      "type": "WEBHOOK_RESPONSE"
-    },
-    {
-      "name": "review_response",
-      "type": "WEBHOOK_RESPONSE"
-    },
-    {
-      "name": "failed_response",
-      "type": "WEBHOOK_RESPONSE"
-    }
+    { "name": "passed_response", "type": "WEBHOOK_RESPONSE" },
+    { "name": "review_response", "type": "WEBHOOK_RESPONSE" },
+    { "name": "failed_response", "type": "WEBHOOK_RESPONSE" }
   ]
 }
